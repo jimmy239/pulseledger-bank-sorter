@@ -1,0 +1,19 @@
+{
+  "name": "PulseLedger — Bank Notification Sorter",
+  "short_name": "PulseLedger",
+  "description": "Sort money paid and received from BCELOne, LDB, APB Meporm, and other bank notifications.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b1120",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
