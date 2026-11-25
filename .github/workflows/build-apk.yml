@@ -19,12 +19,13 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Install Android SDK platform and build-tools
+      - name: Accept Android SDK licenses and install packages
         run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
             "platforms;android-36" \
             "build-tools;35.0.0" \
-            "platform-tools" 2>&1 | grep -v "^$" || true
+            "platform-tools"
 
       - name: Install Node dependencies
         run: npm ci
@@ -37,8 +38,6 @@ jobs:
 
       - name: Build Debug APK
         working-directory: android
-        env:
-          ANDROID_HOME: ${{ env.ANDROID_HOME }}
         run: ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK artifact
