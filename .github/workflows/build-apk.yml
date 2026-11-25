@@ -19,8 +19,12 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Install Android SDK platform and build-tools
+        run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
+            "platforms;android-36" \
+            "build-tools;35.0.0" \
+            "platform-tools" 2>&1 | grep -v "^$" || true
 
       - name: Install Node dependencies
         run: npm ci
@@ -33,9 +37,9 @@ jobs:
 
       - name: Build Debug APK
         working-directory: android
-        run: |
-          sed -i '/org.gradle.java.home/d' gradle.properties
-          ./gradlew assembleDebug --no-daemon
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
+        run: ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
